@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💌 Pre teba</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- jemný animovaný background -->
+  <div class="bg">
+    <div class="glow"></div>
+    <div class="sparkles" aria-hidden="true"></div>
+    <div class="hearts" aria-hidden="true"></div>
+  </div>
+
+  <main class="page">
+    <button class="open-btn" id="openModalBtn">
+      Otvoriť správu 💗
+    </button>
+  </main>
+
+  <!-- modal -->
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <section class="modal" id="modal">
+      <div class="modal-top">
+        <div class="badge">💘 Valentínsky odkaz</div>
+        <button class="icon-btn" id="closeBtn" aria-label="Zavrieť">✕</button>
+      </div>
+
+      <h1 class="title" id="modalTitle">Budeš mojou valentínkou? 💞</h1>
+      <p class="subtitle">
+        Sľubujem, že toto nie je hoax 😄
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="buttons-area" id="buttonsArea">
+        <a class="btn yes" id="yesBtn" href="yes.html">Áno 💖</a>
+        <button class="btn no" id="noBtn" type="button">Nie 🙃</button>
+      </div>
+
+      <p class="hint" id="hint">
+        (Tip: “Nie” je… trochu hanblivé.)
+      </p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

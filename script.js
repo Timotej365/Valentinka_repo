@@ -53,23 +53,39 @@ function moveNoButton() {
   noBtn.style.transform = `translate(0,0)`;
 }
 
-// keď ide kurzor na tlačidlo "Nie" alebo blízko neho
-noBtn?.addEventListener("mouseenter", moveNoButton);
+// detekcia "mobil vs. myš"
+const isCoarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches; // typicky mobil/tablet
+const isFinePointer = window.matchMedia?.("(pointer: fine)")?.matches;     // typicky PC myš
 
-// bonus: keď sa priblíži kurzor do oblasti (aby to bolo “zúrivejšie”)
-buttonsArea?.addEventListener("mousemove", (e) => {
-  const rect = buttonsArea.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+if (isFinePointer) {
+  // PC: nech uteká pri priblížení (pôvodný efekt)
+  noBtn?.addEventListener("mouseenter", moveNoButton);
 
-  const bx = noBtn.offsetLeft + noBtn.offsetWidth / 2;
-  const by = noBtn.offsetTop + noBtn.offsetHeight / 2;
+  buttonsArea?.addEventListener("mousemove", (e) => {
+    const rect = buttonsArea.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  const dist = Math.hypot(x - bx, y - by);
+    const bx = noBtn.offsetLeft + noBtn.offsetWidth / 2;
+    const by = noBtn.offsetTop + noBtn.offsetHeight / 2;
 
-  // keď si do 90px, utekaj
-  if (dist < 90) moveNoButton();
-});
+    const dist = Math.hypot(x - bx, y - by);
+
+    // keď si do 90px, utekaj
+    if (dist < 90) moveNoButton();
+  });
+} else if (isCoarsePointer) {
+  // MOBILE: uteká až keď sa ho snažíš ťuknúť
+  noBtn?.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  }, { passive: false });
+
+  noBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  });
+}
 
 // --- Floating hearts generator ---
 const heartsContainer = document.querySelector(".hearts");
@@ -102,8 +118,3 @@ function spawnHeart() {
 // spúšťaj srdiečka priebežne
 setInterval(spawnHeart, 280);
 for (let i = 0; i < 12; i++) spawnHeart();
-
-// otvor modal automaticky po 0.7s (môžeš vypnúť, ak chceš)
-setTimeout(() => {
-  if (openModalBtn) openModal();
-}, 700);
